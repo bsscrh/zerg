@@ -24,7 +24,9 @@ class Banner
         if(!$banner){
             throw new BannerMissException();
         }
-        return $banner;
+        $img_prefix = config('setting.img_prefix');
+        var_dump($img_prefix);
+//        return $banner;
     }
 
 
