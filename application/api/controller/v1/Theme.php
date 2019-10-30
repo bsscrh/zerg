@@ -18,4 +18,9 @@ class Theme extends Controller
         }
     	return $imgs;
     }
+
+    public function getComplexOne($id){
+        $value = ThemeModel::with('products')->find($id);
+        var_dump($value);die;
+    }
 }
