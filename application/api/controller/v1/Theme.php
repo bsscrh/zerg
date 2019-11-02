@@ -6,6 +6,7 @@ use think\Controller;
 use app\api\validate\IDCollection;
 use app\api\model\Theme as ThemeModel;
 use app\lib\exception\ThemeMissException;
+use app\api\validate\IDMustBePostiveInt;
 
 class Theme extends Controller
 {
@@ -20,7 +21,8 @@ class Theme extends Controller
     }
 
     public function getComplexOne($id){
-        $value = ThemeModel::with('products')->find($id);
-        var_dump($value);die;
+        (new IDMustBePostiveInt())->goCheck();
+        $theme = ThemeModel::getThemeWithProducts($id);
+        return $theme;
     }
 }

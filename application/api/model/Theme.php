@@ -20,4 +20,9 @@ class Theme extends BaseModel
         //第三个参数是关联模型的关联id，第4个参数当前模型的关联id
         return $this->belongsToMany('Product','theme_product','product_id','theme_id');
     }
+
+    public static function getThemeWithProducts($id){
+        $theme = self::with('products,topicImg,topImg')->find($id);
+        return $theme;
+    }
 }
