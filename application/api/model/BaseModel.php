@@ -14,4 +14,11 @@ class BaseModel extends Model
     	}
     	return $value;
     }
+
+    protected function articleImg($value,$flag){
+    	if($flag == "newsDetail") {
+    		$value = "../".$value;
+    	}
+    	return $value;
+    }
 }
