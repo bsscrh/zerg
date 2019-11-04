@@ -3,6 +3,7 @@
 namespace app\api\model;
 
 use think\Model;
+use think\Request;
 
 class BaseModel extends Model
 {
@@ -20,5 +21,11 @@ class BaseModel extends Model
     		$value = "../".$value;
     	}
     	return $value;
+    }
+
+    protected function getUrl(){
+        $request = Request::instance();
+        $url = $request->url();
+        return $url;
     }
 }
