@@ -27,16 +27,13 @@ class Wxnews extends Controller
             $res = DB::table('wxnews_sc')->where('id',$id)->delete();
             if ($res){
                 Db::table('wxnews')->where('id',$newsid)->setDec('sc');
-                $newsData = WxnewsModel::select();
-                return ['status'=>'cancel_sc','newsData'=>$newsData];
+                return ['status'=>'cancel_sc'];
             }
         }else{
             $res = DB::table('wxnews_sc')->data(['openid'=>$openid,'newsid'=>$newsid])->insert();
             if($res) {
                 Db::table('wxnews')->where('id',$newsid)->setInc('sc');
-                $newsData = WxnewsModel::select();
-                return ['status'=>'add_sc','newsData'=>$newsData];
-//                return "add_sc";
+                return ['status'=>'add_sc'];
             }
         }
     }

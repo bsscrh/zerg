@@ -15,4 +15,5 @@ Route::get('api/:v/banner/:id', 'api/:v.Banner/getBanner');
 Route::get('api/:v/theme', 'api/:v.Theme/getSimpleList');
 Route::get('api/:v/theme/:id', 'api/:v.Theme/getComplexOne');
 Route::get('api/:v/wxnews', 'api/:v.Wxnews/getNewsList');
+Route::get('api/:v/wxnews/:id', 'api/:v.Wxnews/getNewsDetail');
 Route::get('api/:v/dosc/:openid/:newsid', 'api/:v.Wxnews/doSC');
