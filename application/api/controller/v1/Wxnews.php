@@ -22,16 +22,21 @@ class Wxnews extends Controller
         $map['openid']  = ['=',$openid];
         $map['newsid']  = ['=',$newsid];
         $ifsc=Db::table('wxnews_sc')->where($map)->find();
+        $id = $ifsc['id'];
         if($ifsc){
-            $id = $ifsc['id'];
             $res = DB::table('wxnews_sc')->where('id',$id)->delete();
             if ($res){
-                return "cancel_sc";
+                Db::table('wxnews')->where('id',$newsid)->setDec('sc');
+                $newsData = WxnewsModel::select();
+                return ['status'=>'cancel_sc','newsData'=>$newsData];
             }
         }else{
             $res = DB::table('wxnews_sc')->data(['openid'=>$openid,'newsid'=>$newsid])->insert();
             if($res) {
-                return "add_sc";
+                Db::table('wxnews')->where('id',$newsid)->setInc('sc');
+                $newsData = WxnewsModel::select();
+                return ['status'=>'add_sc','newsData'=>$newsData];
+//                return "add_sc";
             }
         }
     }
