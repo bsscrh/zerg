@@ -16,4 +16,8 @@ class Wxnews extends Controller
         $detail = WxnewsModel::find($id);
         return $detail;
     }
+
+    public function doSC($openid,$newsid){
+        return $openid;
+    }
 }
