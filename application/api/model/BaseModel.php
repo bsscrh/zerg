@@ -24,11 +24,6 @@ class BaseModel extends Model
     	return $value;
     }
 
-    protected function getMainImgUrl($value) {
-        $url = $this->img_prefix.$value;
-        return $url;
-    }
-
     protected function articleImg($value,$flag){
     	if($flag == "newsDetail") {
     		$value = "../".$value;

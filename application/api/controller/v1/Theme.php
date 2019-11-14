@@ -14,7 +14,7 @@ class Theme extends Controller
     	(new IDCollection())->goCheck();
         $ids = explode(',', $ids);
         $imgs = ThemeModel::with('topicImg,topImg')->select($ids);
-        if(!$imgs){
+        if($imgs->isEmpty()){
             throw new ThemeMissException();
         }
     	return $imgs;
