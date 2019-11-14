@@ -11,8 +11,7 @@ class Category
 {
     public function getCategories()
     {
-//        $categories = CategoryModel::all([],'img');
-        $categories = CategoryModel::with('img')->select();
+        $categories = CategoryModel::all([],'img');
         if($categories->isEmpty()){
             throw new CategoryMissException();
         }
