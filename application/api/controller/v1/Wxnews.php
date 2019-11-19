@@ -9,6 +9,7 @@ use think\Db;
 class Wxnews extends Controller
 {
     public function getNewsList(){
+        header('Access-Control-Allow-Origin:*');
         $newsList = WxnewsModel::select();
         return $newsList;
     }
