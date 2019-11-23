@@ -3,6 +3,7 @@
 namespace app\api\controller\v1;
 
 use app\api\validate\Count;
+use app\api\validate\IDMustBePostiveInt;
 use app\lib\exception\ProductMissException;
 use think\Controller;
 use app\api\model\Product as ProductModel;
@@ -16,6 +17,15 @@ class Product extends Controller
             throw new ProductMissException();
         }
         $product = $product->hidden(['summary']);
+        return $product;
+    }
+
+    public function getAllInCategory($id){
+        (new IDMustBePostiveInt())->goCheck();
+        $product = ProductModel::getAllInCategory($id);
+        if($product->isEmpty()){
+            throw new ProductMissException();
+        }
         return $product;
     }
 }
