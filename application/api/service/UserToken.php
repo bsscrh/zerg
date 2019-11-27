@@ -2,8 +2,9 @@
 
 namespace app\api\service;
 
-
+use app\lib\exception\WeChatException;
 use think\Exception;
+use app\api\model\User;
 
 class UserToken
 {
@@ -22,20 +23,59 @@ class UserToken
 
     public function get(){
         $result = curl_get($this->loginUrl);
+
         $wxresult =  json_decode($result,true);
         if(empty($wxresult)){
             throw new Exception('获取session_key及openID时异常，微信内部错误');
         }else{
-            // 建议用明确的变量来表示是否成功
-            // 微信服务器并不会将错误标记为400，无论成功还是失败都标记成200
-            // 这样非常不好判断，只能使用errcode是否存在来判断
             $loginFail = array_key_exists('errcode', $wxresult);
             if ($loginFail) {
-//                $this->processLoginError($wxresult);
+                $this->processLoginError($wxresult);
             }
             else {
-//                return $this->grantToken($wxresult);
+                return $this->grantToken($wxresult);
             }
         }
+    }
+
+    // 处理微信登陆异常
+    // 那些异常应该返回客户端，那些异常不应该返回客户端
+    // 需要认真思考
+    private function processLoginError($wxResult)
+    {
+        throw new WeChatException(
+            [
+                'msg' => $wxResult['errmsg'],
+                'errorCode' => $wxResult['errcode']
+            ]);
+    }
+
+    // 颁发令牌
+    // 只要调用登陆就颁发新令牌
+    // 但旧的令牌依然可以使用
+    // 所以通常令牌的有效时间比较短
+    // 目前微信的express_in时间是7200秒
+    // 在不设置刷新令牌（refresh_token）的情况下
+    // 只能延迟自有token的过期时间超过7200秒（目前还无法确定，在express_in时间到期后
+    // 还能否进行微信支付
+    // 没有刷新令牌会有一个问题，就是用户的操作有可能会被突然中断
+    private function grantToken($wxResult)
+    {
+        // 此处生成令牌使用的是TP5自带的令牌
+        // 如果想要更加安全可以考虑自己生成更复杂的令牌
+        // 比如使用JWT并加入盐，如果不加入盐有一定的几率伪造令牌
+        $openid = $wxResult['openid'];
+        return $openid;
+//        $user = User::getByOpenID($openid);
+//        if (!$user)
+//        {
+//            $uid = $this->newUser($openid);
+//        }
+//        else {
+//            $uid = $user->id;
+//        }
+//        $cachedValue = $this->prepareCachedValue($wxResult, $uid);
+//        $token = $this->saveToCache($cachedValue);
+//        return $token;
     }
 }
