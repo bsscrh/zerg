@@ -13,6 +13,7 @@ Route::get('api/:v/product/recent', 'api/:v.Product/getRecent');
 Route::get('api/:v/product/by_category', 'api/:v.Product/getAllInCategory');
 
 Route::post('api/:v/token/user', 'api/:v.Token/getToken');
+Route::get('api/:v/token/test', 'api/:v.Token/curlTest');
 
 Route::get('api/:v/wxnews', 'api/:v.Wxnews/getNewsList');
 Route::get('api/:v/wxnews/:id', 'api/:v.Wxnews/getNewsDetail');
