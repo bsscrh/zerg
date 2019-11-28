@@ -2,11 +2,13 @@
 
 namespace app\api\service;
 
+use app\lib\enum\ScopeEnum;
+use app\lib\exception\TokenException;
 use app\lib\exception\WeChatException;
 use think\Exception;
 use app\api\model\User;
 
-class UserToken
+class UserToken extends Token
 {
     protected $code;
     protected $appid;
@@ -62,20 +64,54 @@ class UserToken
     private function grantToken($wxResult)
     {
         // 此处生成令牌使用的是TP5自带的令牌
-        // 如果想要更加安全可以考虑自己生成更复杂的令牌
-        // 比如使用JWT并加入盐，如果不加入盐有一定的几率伪造令牌
         $openid = $wxResult['openid'];
         return $openid;
-//        $user = User::getByOpenID($openid);
-//        if (!$user)
-//        {
-//            $uid = $this->newUser($openid);
-//        }
-//        else {
-//            $uid = $user->id;
-//        }
-//        $cachedValue = $this->prepareCachedValue($wxResult, $uid);
-//        $token = $this->saveToCache($cachedValue);
-//        return $token;
+        $user = User::getByOpenID($openid);
+        if (!$user)
+        {
+            $uid = $this->newUser($openid);
+        }
+        else {
+            $uid = $user->id;
+        }
+        $cachedValue = $this->prepareCachedValue($wxResult, $uid);
+        $token = $this->saveToCache($cachedValue);
+        return $token;
+    }
+
+    private function prepareCachedValue($wxResult, $uid)
+    {
+        $cachedValue = $wxResult;
+        $cachedValue['uid'] = $uid;
+        $cachedValue['scope'] = ScopeEnum::User;
+        return $cachedValue;
+    }
+
+    // 写入缓存
+    private function saveToCache($wxResult)
+    {
+        $key = self::generateToken();
+        $value = json_encode($wxResult);
+        $expire_in = config('setting.token_expire_in');
+        $result = cache($key, $value, $expire_in);
+
+        if (!$result){
+            throw new TokenException([
+                'msg' => '服务器缓存异常',
+                'errorCode' => 10005
+            ]);
+        }
+        return $key;
+    }
+
+    // 创建新用户
+    private function newUser($openid)
+    {
+
+        $user = User::create(
+            [
+                'openid' => $openid
+            ]);
+        return $user->id;
     }
 }
