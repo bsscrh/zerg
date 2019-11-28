@@ -65,7 +65,7 @@ class UserToken extends Token
     {
         // 此处生成令牌使用的是TP5自带的令牌
         $openid = $wxResult['openid'];
-        return $openid;
+
         $user = User::getByOpenID($openid);
         if (!$user)
         {
@@ -76,6 +76,7 @@ class UserToken extends Token
         }
         $cachedValue = $this->prepareCachedValue($wxResult, $uid);
         $token = $this->saveToCache($cachedValue);
+        
         return $token;
     }
 
