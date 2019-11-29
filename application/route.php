@@ -11,6 +11,7 @@ Route::get('api/:v/category/all', 'api/:v.Category/getCategories');
 
 Route::get('api/:v/product/recent', 'api/:v.Product/getRecent');
 Route::get('api/:v/product/by_category', 'api/:v.Product/getAllInCategory');
+Route::get('api/:v/product/:id', 'api/:v.Product/getOne');
 
 Route::post('api/:v/token/user', 'api/:v.Token/getToken');
 Route::get('api/:v/token/test', 'api/:v.Token/curlTest');

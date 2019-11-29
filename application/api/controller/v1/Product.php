@@ -28,4 +28,13 @@ class Product extends Controller
         }
         return $product;
     }
+
+    public function getOne($id){
+        (new IDMustBePostiveInt())->goCheck();
+        $detail = ProductModel::getProductDetail($id);
+        if(!$detail){
+            throw new ProductMissException();
+        }
+        return $detail;
+    }
 }
