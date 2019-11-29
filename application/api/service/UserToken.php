@@ -88,7 +88,7 @@ class UserToken extends Token
         return $cachedValue;
     }
 
-    // 写入缓存
+    // 写入缓存并返回token，后期可以通过token获取用户信息
     private function saveToCache($cachedValue)
     {
         $key = self::generateToken();
