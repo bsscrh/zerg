@@ -9,9 +9,11 @@ Route::get('api/:v/theme/:id', 'api/:v.Theme/getComplexOne');
 
 Route::get('api/:v/category/all', 'api/:v.Category/getCategories');
 
-Route::get('api/:v/product/recent', 'api/:v.Product/getRecent');
-Route::get('api/:v/product/by_category', 'api/:v.Product/getAllInCategory');
-Route::get('api/:v/product/:id', 'api/:v.Product/getOne');
+Route::group('api/:v/product',function(){
+    Route::get('/by_category', 'api/:v.Product/getAllInCategory');
+    Route::get('/:id', 'api/:v.Product/getOne',[],['id'=>'\d+']);//id必须是正整数才能匹配该条路由，由于路由匹配是顺序匹配，如果不加id验证，下面的类似api/:v/product/recent就应该放在该条路由之前，否则会匹配不到。
+    Route::get('/recent', 'api/:v.Product/getRecent');
+});
 
 Route::post('api/:v/token/user', 'api/:v.Token/getToken');
 Route::get('api/:v/token/test', 'api/:v.Token/curlTest');
