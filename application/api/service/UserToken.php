@@ -53,17 +53,8 @@ class UserToken extends Token
     }
 
     // 颁发令牌
-    // 只要调用登陆就颁发新令牌
-    // 但旧的令牌依然可以使用
-    // 所以通常令牌的有效时间比较短
-    // 目前微信的express_in时间是7200秒
-    // 在不设置刷新令牌（refresh_token）的情况下
-    // 只能延迟自有token的过期时间超过7200秒（目前还无法确定，在express_in时间到期后
-    // 还能否进行微信支付
-    // 没有刷新令牌会有一个问题，就是用户的操作有可能会被突然中断
     private function grantToken($wxResult)
     {
-        // 此处生成令牌使用的是TP5自带的令牌
         $openid = $wxResult['openid'];
 
         $user = User::getByOpenID($openid);
