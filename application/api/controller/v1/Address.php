@@ -19,6 +19,7 @@ class Address
         if(!$user){
             throw new UserException();
         }
+
         //只保存validate规则里面验证的数据，防止恶意传值
         $data = $validate->getDataByRule(input('post.'));
         $userAddress = $user->address;
@@ -27,6 +28,7 @@ class Address
         }else{
             $user->address->save($data);
         }
-        return new SuccessMessage();
+        //使用json才能修改系统返回状态码
+        return json(new SuccessMessage(),201);
     }
 }

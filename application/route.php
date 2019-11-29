@@ -18,7 +18,7 @@ Route::group('api/:v/product',function(){
 Route::post('api/:v/token/user', 'api/:v.Token/getToken');
 Route::get('api/:v/token/test', 'api/:v.Token/curlTest');
 
-Route::get('api/:v/address', 'api/:v.Address/createOrUpdateAddress');
+Route::post('api/:v/address', 'api/:v.Address/createOrUpdateAddress');
 
 Route::get('api/:v/wxnews', 'api/:v.Wxnews/getNewsList');
 Route::get('api/:v/wxnews/:id', 'api/:v.Wxnews/getNewsDetail');
