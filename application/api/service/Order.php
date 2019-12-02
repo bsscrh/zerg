@@ -10,6 +10,7 @@ use app\lib\exception\UserException;
 use app\api\model\Order as OrderModel;
 use think\Exception;
 
+
 class Order
 {
     //客户端的商品列表
@@ -30,6 +31,7 @@ class Order
         }
         //生成订单快照
         $orderSnap = $this->snapOrder($status);
+        //创建订单
         $status = self::createOrderByTrans($orderSnap);
         $status['pass'] = true;
         return $status;
