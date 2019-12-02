@@ -2,8 +2,13 @@
 
 namespace app\api\service;
 
+use app\api\model\OrderProduct;
 use app\api\model\Product;
+use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
+use app\lib\exception\UserException;
+use app\api\model\Order as OrderModel;
+use think\Exception;
 
 class Order
 {
@@ -23,8 +28,8 @@ class Order
             $status['order_id'] = -1;
             return $status;
         }
-
-        $orderSnap = $this->snapOrder();
+        //生成订单快照
+        $orderSnap = $this->snapOrder($status);
         $status = self::createOrderByTrans($orderSnap);
         $status['pass'] = true;
         return $status;
@@ -49,6 +54,7 @@ class Order
         $status = [
             'pass' => true,
             'orderPrice' => 0,
+            'totalCount'=>0,
             'pStatusArray' => []
         ];
         foreach ($this->oProducts as $oProduct) {
@@ -58,6 +64,7 @@ class Order
                 $status['pass'] = false;
             }
             $status['orderPrice'] += $pStatus['totalPrice'];
+            $status['totalCount'] += $pStatus['count'];
             array_push($status['pStatusArray'], $pStatus);
         }
         return $status;
@@ -100,33 +107,42 @@ class Order
         return $pStatus;
     }
 
-    private function snapOrder()
+    private function snapOrder($status)
     {
-        // status可以单独定义一个类
         $snap = [
             'orderPrice' => 0,
             'totalCount' => 0,
             'pStatus' => [],
-            'snapAddress' => json_encode($this->getUserAddress()),
-            'snapName' => $this->products[0]['name'],
-            'snapImg' => $this->products[0]['main_img_url'],
+            'snapAddress' => '',
+            'snapName' => '',
+            'snapImg' => '',
         ];
 
+        $snap['orderPrice'] = $status['orderPrice'];
+        $snap['totalCount'] = $status['totalCount'];
+        $snap['pStatus'] = $status['pStatusArray'];
+        $snap['snapAddress'] = json_encode($this->getUserAddress());
+        $snap['snapName'] = $this->products[0]['name'];
+        $snap['snapImg'] = $this->products[0]['main_img_url'];
         if (count($this->products) > 1) {
             $snap['snapName'] .= '等';
         }
 
-
-        for ($i = 0; $i < count($this->products); $i++) {
-            $product = $this->products[$i];
-            $oProduct = $this->oProducts[$i];
-
-            $pStatus = $this->snapProduct($product, $oProduct['count']);
-            $snap['orderPrice'] += $pStatus['totalPrice'];
-            $snap['totalCount'] += $pStatus['count'];
-            array_push($snap['pStatus'], $pStatus);
-        }
         return $snap;
+    }
+
+    private function getUserAddress()
+    {
+        $userAddress = UserAddress::where('user_id', '=', $this->uid)
+            ->find();
+        if (!$userAddress) {
+            throw new UserException(
+                [
+                    'msg' => '用户收货地址不存在，下单失败',
+                    'errorCode' => 60001,
+                ]);
+        }
+        return $userAddress->toArray();
     }
 
     private function createOrderByTrans($snap)
@@ -150,6 +166,7 @@ class Order
             foreach ($this->oProducts as &$p) {
                 $p['order_id'] = $orderID;
             }
+
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($this->oProducts);
             return [
@@ -162,6 +179,15 @@ class Order
         }
     }
 
+    public static function makeOrderNo()
+    {
+        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+        $orderSn =
+            $yCode[intval(date('Y')) - 2017] . strtoupper(dechex(date('m'))) . date(
+                'd') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf(
+                '%02d', rand(0, 99));
+        return $orderSn;
+    }
 
 
 }
