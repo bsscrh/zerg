@@ -32,9 +32,9 @@ class Order
         //生成订单快照
         $orderSnap = $this->snapOrder($status);
         //创建订单
-        $status = self::createOrderByTrans($orderSnap);
-        $status['pass'] = true;
-        return $status;
+        $order = $this->createOrderByTrans($orderSnap);
+        $order['pass'] = true;
+        return $order;
     }
 
     // 根据订单查找真实商品

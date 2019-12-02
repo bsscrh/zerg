@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 use app\api\controller\BaseController;
 use app\api\validate\OrderPlace;
 use app\api\service\Token;
+use app\api\service\Order as OrderService;
 
 //选择商品下单后，要检测库存量
 //准备支付时，要检测库存量
@@ -20,5 +21,8 @@ class Order extends BaseController
         (New OrderPlace())->goCheck();
         $products = input('post.products/a');
         $uid = Token::getCurrentUid();
+        $order = new OrderService();
+        $order = $order->place($uid, $products);
+        return $order;
     }
 }
