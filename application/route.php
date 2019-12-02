@@ -20,6 +20,8 @@ Route::get('api/:v/token/test', 'api/:v.Token/curlTest');
 
 Route::post('api/:v/address', 'api/:v.Address/createOrUpdateAddress');
 
+Route::post('api/:v/order', 'api/:v.Order/placeOrder');
+
 Route::get('api/:v/wxnews', 'api/:v.Wxnews/getNewsList');
 Route::get('api/:v/wxnews/:id', 'api/:v.Wxnews/getNewsDetail');
 Route::get('api/:v/dosc/:openid/:newsid', 'api/:v.Wxnews/doSC');

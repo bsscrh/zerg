@@ -16,11 +16,13 @@ use think\Controller;
 
 class BaseController extends Controller
 {
+    //用户才可以
     protected function checkExclusiveScope()
     {
         Token::needExclusiveScope();
     }
 
+    //用户管理员都可以
     protected function checkPrimaryScope()
     {
         Token::needPrimaryScope();
