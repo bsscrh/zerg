@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost
-Source Server Version : 80012
+Source Server Version : 50553
 Source Host           : localhost:3306
 Source Database       : zerg
 
 Target Server Type    : MYSQL
-Target Server Version : 80012
+Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-11-10 20:07:26
+Date: 2019-12-02 16:37:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -180,11 +180,16 @@ CREATE TABLE `order` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_no` (`order_no`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
+INSERT INTO `order` VALUES ('1', 'CC02696819531338', '1', null, '1575269681', '0.01', '1', 'http://zerg.com/images/product-vg@1.png', '芹菜 半斤', '1', '1575269681', '[{\"id\":1,\"haveStock\":true,\"count\":1,\"name\":\"\\u82b9\\u83dc \\u534a\\u65a4\",\"totalPrice\":0.01}]', '{\"name\":\"\\u9648\\u8363\\u714c\",\"mobile\":\"18359195595\",\"province\":\"\\u6d59\\u6c5f\\u7701\",\"city\":\"\\u5b81\\u6ce2\\u5e02\",\"country\":\"\\u4e2d\\u56fd\",\"detail\":\"\\u911e\\u5dde\\u533a\\u4e0b\\u5e94\",\"update_time\":\"1970-01-01 08:00:00\"}', null);
+INSERT INTO `order` VALUES ('2', 'CC02699036898121', '1', null, '1575269903', '0.05', '1', 'http://zerg.com/images/product-vg@1.png', '芹菜 半斤等', '5', '1575269903', '[{\"id\":1,\"haveStock\":true,\"count\":2,\"name\":\"\\u82b9\\u83dc \\u534a\\u65a4\",\"totalPrice\":0.02},{\"id\":2,\"haveStock\":true,\"count\":3,\"name\":\"\\u68a8\\u82b1\\u5e26\\u96e8 3\\u4e2a\",\"totalPrice\":0.03}]', '{\"name\":\"\\u9648\\u8363\\u714c\",\"mobile\":\"18359195595\",\"province\":\"\\u6d59\\u6c5f\\u7701\",\"city\":\"\\u5b81\\u6ce2\\u5e02\",\"country\":\"\\u4e2d\\u56fd\",\"detail\":\"\\u911e\\u5dde\\u533a\\u4e0b\\u5e94\",\"update_time\":\"1970-01-01 08:00:00\"}', null);
+INSERT INTO `order` VALUES ('3', 'CC02715628747107', '1', null, '1575271562', '0.05', '1', 'http://zerg.com/images/product-vg@1.png', '芹菜 半斤等', '5', '1575271562', '[{\"id\":1,\"haveStock\":true,\"count\":2,\"name\":\"\\u82b9\\u83dc \\u534a\\u65a4\",\"totalPrice\":0.02},{\"id\":2,\"haveStock\":true,\"count\":3,\"name\":\"\\u68a8\\u82b1\\u5e26\\u96e8 3\\u4e2a\",\"totalPrice\":0.03}]', '{\"name\":\"\\u9648\\u8363\\u714c\",\"mobile\":\"18359195595\",\"province\":\"\\u6d59\\u6c5f\\u7701\",\"city\":\"\\u5b81\\u6ce2\\u5e02\",\"country\":\"\\u4e2d\\u56fd\",\"detail\":\"\\u911e\\u5dde\\u533a\\u4e0b\\u5e94\",\"update_time\":\"1970-01-01 08:00:00\"}', null);
+INSERT INTO `order` VALUES ('4', 'CC02732771927696', '1', null, '1575273277', '0.05', '1', 'http://zerg.com/images/product-vg@1.png', '芹菜 半斤等', '5', '1575273277', '[{\"id\":1,\"haveStock\":true,\"count\":2,\"name\":\"\\u82b9\\u83dc \\u534a\\u65a4\",\"totalPrice\":0.02},{\"id\":2,\"haveStock\":true,\"count\":3,\"name\":\"\\u68a8\\u82b1\\u5e26\\u96e8 3\\u4e2a\",\"totalPrice\":0.03}]', '{\"name\":\"\\u9648\\u8363\\u714c\",\"mobile\":\"18359195595\",\"province\":\"\\u6d59\\u6c5f\\u7701\",\"city\":\"\\u5b81\\u6ce2\\u5e02\",\"country\":\"\\u4e2d\\u56fd\",\"detail\":\"\\u911e\\u5dde\\u533a\\u4e0b\\u5e94\",\"update_time\":\"1970-01-01 08:00:00\"}', null);
+INSERT INTO `order` VALUES ('5', 'CC02746963009349', '1', null, '1575274696', '0.05', '1', 'http://zerg.com/images/product-vg@1.png', '芹菜 半斤等', '5', '1575274696', '[{\"id\":1,\"haveStock\":true,\"count\":2,\"name\":\"\\u82b9\\u83dc \\u534a\\u65a4\",\"totalPrice\":0.02},{\"id\":2,\"haveStock\":true,\"count\":3,\"name\":\"\\u68a8\\u82b1\\u5e26\\u96e8 3\\u4e2a\",\"totalPrice\":0.03}]', '{\"name\":\"\\u9648\\u8363\\u714c\",\"mobile\":\"18359195595\",\"province\":\"\\u6d59\\u6c5f\\u7701\",\"city\":\"\\u5b81\\u6ce2\\u5e02\",\"country\":\"\\u4e2d\\u56fd\",\"detail\":\"\\u911e\\u5dde\\u533a\\u4e0b\\u5e94\",\"update_time\":\"1970-01-01 08:00:00\"}', null);
 
 -- ----------------------------
 -- Table structure for order_product
@@ -202,6 +207,15 @@ CREATE TABLE `order_product` (
 -- ----------------------------
 -- Records of order_product
 -- ----------------------------
+INSERT INTO `order_product` VALUES ('1', '1', '1', null, null);
+INSERT INTO `order_product` VALUES ('2', '1', '2', null, null);
+INSERT INTO `order_product` VALUES ('3', '1', '2', null, null);
+INSERT INTO `order_product` VALUES ('4', '1', '2', null, null);
+INSERT INTO `order_product` VALUES ('5', '1', '2', null, null);
+INSERT INTO `order_product` VALUES ('2', '2', '3', null, null);
+INSERT INTO `order_product` VALUES ('3', '2', '3', null, null);
+INSERT INTO `order_product` VALUES ('4', '2', '3', null, null);
+INSERT INTO `order_product` VALUES ('5', '2', '3', null, null);
 
 -- ----------------------------
 -- Table structure for product
@@ -404,11 +418,12 @@ CREATE TABLE `user` (
   `update_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `openid` (`openid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', 'oGMkf5UtEREjZSbS5HfiK322nK38', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for user_address
@@ -427,11 +442,12 @@ CREATE TABLE `user_address` (
   `update_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_address
 -- ----------------------------
+INSERT INTO `user_address` VALUES ('1', '陈荣煌', '18359195595', '浙江省', '宁波市', '中国', '鄞州区下应', null, '1', null);
 
 -- ----------------------------
 -- Table structure for wxnews
@@ -455,7 +471,7 @@ CREATE TABLE `wxnews` (
 -- ----------------------------
 -- Records of wxnews
 -- ----------------------------
-INSERT INTO `wxnews` VALUES ('1', '../images/head1.png', 'crh', '1572776452', '岁月不老，一世倾城', '../images/sub1.png', '时光的流逝，如缓缓流过的小溪，再怎样努力也无法逆转它的方向；这个午后，我站在开满丁香花的树下目送你走远，紫色的小花散发着幽幽的暗香，我忍不住深吸一口气，连同这阳光的明艳一起咽下，又忍不住轻笑，你温情厚重的影子仿佛还在，余温尚存，这里因你目光的停留而变成一道让人心生欢快的风景！', '3', '30', 'http://music.163.com/song/media/outer/url?id=412911436.mp3', '画');
+INSERT INTO `wxnews` VALUES ('1', '../images/head1.png', 'crh', '1572776452', '岁月不老，一世倾城', '../images/sub1.png', '时光的流逝，如缓缓流过的小溪，再怎样努力也无法逆转它的方向；这个午后，我站在开满丁香花的树下目送你走远，紫色的小花散发着幽幽的暗香，我忍不住深吸一口气，连同这阳光的明艳一起咽下，又忍不住轻笑，你温情厚重的影子仿佛还在，余温尚存，这里因你目光的停留而变成一道让人心生欢快的风景！', '2', '30', 'http://music.163.com/song/media/outer/url?id=412911436.mp3', '画');
 INSERT INTO `wxnews` VALUES ('2', '../images/head2.png', 'bss', '1572776452', '时光不老，我们不散', '../images/sub2.png', '天空不知何时划过一颗颗流星，飞向同一个星球，宛如我们来自不同的城市，但却相聚在这小小的房子里。生命是个漫长又遥远的过程，经历着陌生和熟悉，冷漠和温暖。时光消磨着岁月的痕迹追着青春的步伐，我们哼着歌回忆往昔;我们读着书品味诗意;', '1', '40', 'http://music.163.com/song/media/outer/url?id=36270426.mp3', '来自天堂的魔鬼');
 
 -- ----------------------------
@@ -467,12 +483,9 @@ CREATE TABLE `wxnews_sc` (
   `openid` varchar(255) NOT NULL,
   `newsid` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wxnews_sc
 -- ----------------------------
-INSERT INTO `wxnews_sc` VALUES ('25', '3', '1');
-INSERT INTO `wxnews_sc` VALUES ('7', '2', '1');
 INSERT INTO `wxnews_sc` VALUES ('103', 'oGMkf5UtEREjZSbS5HfiK322nK38', '2');
-INSERT INTO `wxnews_sc` VALUES ('109', 'oGMkf5UtEREjZSbS5HfiK322nK38', '1');
