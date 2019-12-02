@@ -8,6 +8,7 @@ use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
 use app\api\model\Order as OrderModel;
+use think\Db;
 use think\Exception;
 
 
@@ -149,6 +150,8 @@ class Order
 
     private function createOrderByTrans($snap)
     {
+        // 启动事务
+        Db::startTrans();
         try {
             $orderNo = $this->makeOrderNo();
             $order = new OrderModel();
@@ -171,12 +174,17 @@ class Order
 
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($this->oProducts);
+            // 提交事务
+            Db::commit();
+
             return [
                 'order_no' => $orderNo,
                 'order_id' => $orderID,
                 'create_time' => $create_time
             ];
         } catch (Exception $ex) {
+            // 回滚事务
+            Db::rollback();
             throw $ex;
         }
     }
