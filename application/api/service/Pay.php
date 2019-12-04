@@ -71,13 +71,13 @@ class Pay
         // 失败时不会返回result_code
         if($wxOrder['return_code'] == 'SUCCESS' && $wxOrder['result_code'] !='SUCCESS'){
             $this->recordPreOrder($wxOrder);
-            $signature = $this->sign($wxOrder);
-            return $signature;
         }else{
             Log::record($wxOrder,'error');
             Log::record('获取预支付订单失败','error');
 //            throw new Exception('获取预支付订单失败');
         }
+        $signature = $this->sign($wxOrder,$config);
+        return $signature;
     }
 
     private function recordPreOrder($wxOrder){
@@ -87,16 +87,17 @@ class Pay
     }
 
     // 签名
-    private function sign($wxOrder)
+    private function sign($wxOrder,$config)
     {
         $jsApiPayData = new \WxPayJsApiPay();
-        $jsApiPayData->SetAppid(config('wx.app_id'));
+        $jsApiPayData->SetAppid(config('wx.appid'));
         $jsApiPayData->SetTimeStamp((string)time());
         $rand = md5(time() . mt_rand(0, 1000));
         $jsApiPayData->SetNonceStr($rand);
-        $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
+        //调试暂时注释，后面看到记得取消注释
+//        $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
         $jsApiPayData->SetSignType('md5');
-        $sign = $jsApiPayData->MakeSign();
+        $sign = $jsApiPayData->MakeSign($config);
         $rawValues = $jsApiPayData->GetValues();
         $rawValues['paySign'] = $sign;
         unset($rawValues['appId']);
