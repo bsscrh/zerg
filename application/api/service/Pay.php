@@ -12,7 +12,7 @@ use think\Loader;
 use think\Log;
 
 Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
-
+//require ('../../../extend/WxPay/WxPay.Config.php');
 class Pay
 {
     private $orderNo;
@@ -56,33 +56,35 @@ class Pay
         $wxOrderData->SetOut_trade_no($this->orderNo);
         //JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，MICROPAY--刷卡支付
         $wxOrderData->SetTrade_type('JSAPI');
+
         $wxOrderData->SetTotal_fee($totalPrice * 100);
         $wxOrderData->SetBody('零食商贩');
         $wxOrderData->SetOpenid($openid);
-        $wxOrderData->SetNotify_url(config('secure.pay_back_url'));
-
-        return $this->getPaySignature($wxOrderData);
+//        $wxOrderData->SetNotify_url(config('secure.pay_back_url'));
+        $wxOrderData->SetNotify_url("https://qq.com");
+        return $this->getPaySignature(new \WxPayConfig(),$wxOrderData,6);
     }
 
     //向微信请求订单号并生成签名
-    private function getPaySignature($wxOrderData)
+    private function getPaySignature($config,$wxOrderData,$timeOut)
     {
-        $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
+        $wxOrder = \WxPayApi::unifiedOrder($config,$wxOrderData,$timeOut);
+
         // 失败时不会返回result_code
         if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] !='SUCCESS'){
             Log::record($wxOrder,'error');
             Log::record('获取预支付订单失败','error');
         }
-        $this->recordPreOrder($wxOrder);
-        $signature = $this->sign($wxOrder);
-        return $signature;
+//        $this->recordPreOrder($wxOrder);
+//        $signature = $this->sign($wxOrder);
+//        return $signature;
     }
 
-    private function recordPreOrder($wxOrder){
-        // 必须是update，每次用户取消支付后再次对同一订单支付，prepay_id是不同的
-        OrderModel::where('id', '=', $this->orderID)
-            ->update(['prepay_id' => $wxOrder['prepay_id']]);
-    }
+//    private function recordPreOrder($wxOrder){
+//        // 必须是update，每次用户取消支付后再次对同一订单支付，prepay_id是不同的
+//        OrderModel::where('id', '=', $this->orderID)
+//            ->update(['prepay_id' => $wxOrder['prepay_id']]);
+//    }
 
     // 签名
     private function sign($wxOrder)
