@@ -4,6 +4,7 @@
 namespace app\api\service;
 
 use app\api\model\Order as OrderModel;
+use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
 use app\lib\exception\TokenException;
 use think\Exception;
@@ -28,9 +29,13 @@ class Pay
 
     public function pay()
     {
+        //订单号可能不存在
+        //订单号和用户可能不匹配
+        //订单可能已支付
         $this->checkOrderValid();
-        $order = new Order();
-        $status = $order->checkOrderStock($this->orderID);
+        //库存量检测
+        $orderService = new Order();
+        $status = $orderService->checkOrderStock($this->orderID);
         if (!$status['pass'])
         {
             return $status;
@@ -117,7 +122,8 @@ class Pay
                     'errorCode' => 10003
                 ]);
         }
-        if($order->status != 1){
+
+        if($order->status != OrderStatusEnum::UNPAID){
             throw new OrderException([
                 'msg' => '订单已支付过啦',
                  'errorCode' => 80003,
