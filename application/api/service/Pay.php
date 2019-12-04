@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\api\service;
 
 use app\api\model\Order as OrderModel;
@@ -12,7 +11,7 @@ use think\Loader;
 use think\Log;
 
 Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
-//require ('../../../extend/WxPay/WxPay.Config.php');
+
 class Pay
 {
     private $orderNo;
@@ -69,22 +68,23 @@ class Pay
     private function getPaySignature($config,$wxOrderData,$timeOut)
     {
         $wxOrder = \WxPayApi::unifiedOrder($config,$wxOrderData,$timeOut);
-
         // 失败时不会返回result_code
-        if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] !='SUCCESS'){
+        if($wxOrder['return_code'] == 'SUCCESS' && $wxOrder['result_code'] !='SUCCESS'){
+            $this->recordPreOrder($wxOrder);
+            $signature = $this->sign($wxOrder);
+            return $signature;
+        }else{
             Log::record($wxOrder,'error');
             Log::record('获取预支付订单失败','error');
+//            throw new Exception('获取预支付订单失败');
         }
-//        $this->recordPreOrder($wxOrder);
-//        $signature = $this->sign($wxOrder);
-//        return $signature;
     }
 
-//    private function recordPreOrder($wxOrder){
-//        // 必须是update，每次用户取消支付后再次对同一订单支付，prepay_id是不同的
-//        OrderModel::where('id', '=', $this->orderID)
-//            ->update(['prepay_id' => $wxOrder['prepay_id']]);
-//    }
+    private function recordPreOrder($wxOrder){
+        // 必须是update，每次用户取消支付后再次对同一订单支付，prepay_id是不同的
+        OrderModel::where('id', '=', $this->orderID)
+            ->update(['prepay_id' => $wxOrder['prepay_id']]);
+    }
 
     // 签名
     private function sign($wxOrder)
