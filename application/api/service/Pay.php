@@ -54,6 +54,7 @@ class Pay
         }
         $wxOrderData = new \WxPayUnifiedOrder();
         $wxOrderData->SetOut_trade_no($this->orderNo);
+        //JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，MICROPAY--刷卡支付
         $wxOrderData->SetTrade_type('JSAPI');
         $wxOrderData->SetTotal_fee($totalPrice * 100);
         $wxOrderData->SetBody('零食商贩');
@@ -71,7 +72,6 @@ class Pay
         if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] !='SUCCESS'){
             Log::record($wxOrder,'error');
             Log::record('获取预支付订单失败','error');
-//            throw new Exception('获取预支付订单失败');
         }
         $this->recordPreOrder($wxOrder);
         $signature = $this->sign($wxOrder);
