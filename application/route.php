@@ -22,6 +22,7 @@ Route::post('api/:v/address', 'api/:v.Address/createOrUpdateAddress');
 
 Route::post('api/:v/order', 'api/:v.Order/placeOrder');
 Route::post('api/:v/pay/pre_order', 'api/:v.Pay/getPreOrder');
+Route::post('api/:v/pay/notify', 'api/:v.Pay/receiveNotify');
 
 Route::get('api/:v/wxnews', 'api/:v.Wxnews/getNewsList');
 Route::get('api/:v/wxnews/:id', 'api/:v.Wxnews/getNewsDetail');
