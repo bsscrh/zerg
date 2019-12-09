@@ -45,7 +45,14 @@ class WxNotify extends \WxPayNotify
 //</xml>
 //EOD;
 
-    public function NotifyProcess($data, &$msg)
+    private $wxPayConfig;
+
+    function __construct()
+    {
+        $this->wxPayConfig = new \WxPayConfig();
+    }
+
+    public function NotifyProcess($data,$wxPayConfig,&$msg)
     {
 //        $data = $this->data;
         if ($data['result_code'] == 'SUCCESS') {
