@@ -16,7 +16,15 @@ class Order extends BaseController
         'checkExclusiveScope' => ['only' => 'placeOrder']
     ];
 
-    //下单
+    //下单，参数是产品id和数量
+    /*
+     * {
+        "products":[
+            {"product_id":1,"count":2},
+            {"product_id":2,"count":3}
+            ]
+        }
+     * */
     public function placeOrder(){
         (New OrderPlace())->goCheck();
         $products = input('post.products/a');

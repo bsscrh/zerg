@@ -13,6 +13,7 @@ class Pay extends BaseController
         'checkExclusiveScope' => ['only' => 'getPreOrder']
     ];
 
+    //参数是order_id
     public function getPreOrder($id = ''){
         (new IDMustBePostiveInt())->goCheck();
 
