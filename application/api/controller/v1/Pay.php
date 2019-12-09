@@ -22,6 +22,7 @@ class Pay extends BaseController
 
     public function receiveNotify(){
         $notify = new WxNotify();
-        $notify->handle(new \WxPayConfig());
+        //验证通过减库存
+        $notify->Handle(new \WxPayConfig());
     }
 }
