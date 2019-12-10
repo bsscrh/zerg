@@ -6,6 +6,8 @@ use app\api\controller\BaseController;
 use app\api\validate\OrderPlace;
 use app\api\service\Token;
 use app\api\service\Order as OrderService;
+use app\api\validate\PagingParameter;
+use app\api\model\Order as OrderModel;
 
 //选择商品下单后，要检测库存量
 //准备支付时，要检测库存量
@@ -26,11 +28,28 @@ class Order extends BaseController
         }
      * */
     public function placeOrder(){
-        (New OrderPlace())->goCheck();
+        (new OrderPlace())->goCheck();
         $products = input('post.products/a');
         $uid = Token::getCurrentUid();
         $order = new OrderService();
         $order = $order->place($uid, $products);
         return $order;
+    }
+
+    public function getOrdersByUser($page = 1, $size = 15){
+        (new PagingParameter())->goCheck();
+        $uid = Token::getCurrentUid();
+        $pagingOrders = OrderModel::getSummaryByUser($uid, $page, $size);
+        if($pagingOrders->isEmpty()){
+            return [
+                'data' => [],
+                'current_page' => $pagingOrders->getCurrentPage()
+            ];
+        }
+        $data = $pagingOrders->toArray();
+        return [
+            'data' => $data,
+            'current_page' => $pagingOrders->getCurrentPage()
+        ];
     }
 }
