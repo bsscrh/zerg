@@ -21,6 +21,7 @@ Route::get('api/:v/token/test', 'api/:v.Token/curlTest');
 Route::post('api/:v/address', 'api/:v.Address/createOrUpdateAddress');
 
 Route::post('api/:v/order', 'api/:v.Order/placeOrder');
+Route::get('api/:v/order/:id', 'api/:v.Order/getDetail',[], ['id'=>'\d+']);
 Route::get('api/:v/order/by_user', 'api/:v.Order/getOrdersByUser');
 
 

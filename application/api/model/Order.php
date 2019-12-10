@@ -7,6 +7,11 @@ class Order extends BaseModel
     protected $hidden = ['user_id', 'delete_time', 'update_time'];
     protected $autoWriteTimestamp = true;
 
+    public function products()
+    {
+        return $this->belongsToMany('Product', 'order_product', 'product_id', 'order_id');
+    }
+
     public function getSnapItemsAttr($value)
     {
         if(empty($value)){
@@ -21,7 +26,7 @@ class Order extends BaseModel
         }
         return json_decode(($value));
     }
-    
+
     public static function getSummaryByUser($uid, $page=1, $size=15)
     {
         $pagingData = self::where('user_id', '=', $uid)
@@ -36,8 +41,4 @@ class Order extends BaseModel
         return $pagingData ;
     }
 
-    public function products()
-    {
-        return $this->belongsToMany('Product', 'order_product', 'product_id', 'order_id');
-    }
 }
