@@ -15,7 +15,8 @@ use app\api\model\Order as OrderModel;
 class Order extends BaseController
 {
     protected $beforeActionList = [
-        'checkExclusiveScope' => ['only' => 'placeOrder']
+        'checkExclusiveScope' => ['only' => 'placeOrder'],
+        'checkPrimaryScope' => ['only' => 'getOrdersByUser']
     ];
 
     //下单，参数是产品id和数量
@@ -46,7 +47,7 @@ class Order extends BaseController
                 'current_page' => $pagingOrders->getCurrentPage()
             ];
         }
-        $data = $pagingOrders->toArray();
+        $data = $pagingOrders->hidden(['snap_items','snap_address','prepay_id'])->toArray();
         return [
             'data' => $data,
             'current_page' => $pagingOrders->getCurrentPage()
